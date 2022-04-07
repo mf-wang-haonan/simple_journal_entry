@@ -61,13 +61,17 @@ type Mutation {
   createAccount(input: CreateAccountInput!): Account!
   createJournal(input: CreateJournalInput!): Journal!
   deleteAccount(input: DeleteAccountInput!): DeleteAccountPayload!
-  followSomeone(input: FollowSomeoneMutationInput!): FollowerFollowee!
+  follow(input: FollowMutationInput!): FollowerFollowee!
+  unFollow(input: UnFollowMutationInput!): Int!
   updateAccount(input: UpdateAccountInput!): Account!
 }
 
 type Query {
   allAccounts: [Account!]!
   allJournals: [Journal!]!
+  followeesOfUser(id: Int!): [Account!]!
+  followerFollowees: [FollowerFollowee!]!
+  followersOfUser(id: Int!): [Account!]!
 }
 
 input CreateAccountInput {
@@ -91,7 +95,12 @@ input DeleteAccountInput {
   id: ID!
 }
 
-input FollowSomeoneMutationInput {
+input FollowMutationInput {
+  followeeId: Int!
+  followerId: Int!
+}
+
+input UnFollowMutationInput {
   followeeId: Int!
   followerId: Int!
 }

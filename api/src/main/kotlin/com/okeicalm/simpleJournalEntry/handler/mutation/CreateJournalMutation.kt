@@ -24,7 +24,7 @@ class CreateJournalMutation(private val journalCreateUseCase: JournalCreateUseCa
             )
         }
         val inputData = JournalCreateUseCaseInput(
-            incurredOn = LocalDate.now(), // TODO: dummy
+            incurredOn = LocalDate.now(),
             journalEntryInputDatum = journalEntryInputDatum
         )
         val outputData = journalCreateUseCase.call(inputData)

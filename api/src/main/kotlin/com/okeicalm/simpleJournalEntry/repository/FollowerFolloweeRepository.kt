@@ -2,6 +2,7 @@ package com.okeicalm.simpleJournalEntry.repository
 
 import com.okeicalm.simpleJournalEntry.entity.Account
 import com.okeicalm.simpleJournalEntry.entity.FollowerFollowee
+import com.okeicalm.simpleJournalEntry.infra.db.tables.references.ACCOUNTS
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.FOLLOWER_FOLLOWEE
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
@@ -18,25 +19,42 @@ interface FollowerFolloweeRepository {
     fun deleteFollowerFolloweeRelation(
         followerId: Long,
         followeeId: Long
-    ): FollowerFollowee
+    ): Int
 }
 
 @Repository
 class FollowerFolloweeRepositoryImpl(private val dslContext: DSLContext) :
     FollowerFolloweeRepository {
-    override fun findFolloweesOfUserById(id: Long): List<Account> {
-        TODO("Not yet implemented")
+    override fun findFollowersOfUserById(id: Long): List<Account> {
+        return dslContext.select(
+            ACCOUNTS.ID,
+            ACCOUNTS.NAME,
+            ACCOUNTS.CODE,
+            ACCOUNTS.ELEMENT_TYPE,
+        )
+            .from(ACCOUNTS).join(FOLLOWER_FOLLOWEE)
+            .on(ACCOUNTS.ID.eq(FOLLOWER_FOLLOWEE.FOLLOWER_ID))
+            .where(FOLLOWER_FOLLOWEE.FOLLOWEE_ID.eq(id)).fetch()
+            .into(Account::class.java)
     }
 
-    override fun findFollowersOfUserById(id: Long): List<Account> {
-//        val a =
-//            dslContext.select(ACCOUNTS.ID,ACCOUNTS.CODE,ACCOUNTS.ELEMENT_TYPE, ACCOUNTS.NAME)
-//                .from(FOLLOWER_FOLLOWEE).join(ACCOUNTS).on(ACCOUNTS.ID.eq(id))
-        TODO("Not yet implemented")
+    override fun findFolloweesOfUserById(id: Long): List<Account> {
+        return dslContext.select(
+            ACCOUNTS.ID,
+            ACCOUNTS.NAME,
+            ACCOUNTS.CODE,
+            ACCOUNTS.ELEMENT_TYPE,
+        )
+            .from(ACCOUNTS).join(FOLLOWER_FOLLOWEE)
+            .on(ACCOUNTS.ID.eq(FOLLOWER_FOLLOWEE.FOLLOWEE_ID))
+            .where(FOLLOWER_FOLLOWEE.FOLLOWER_ID.eq(id)).fetch()
+            .into(Account::class.java)
     }
 
     override fun findAll(): List<FollowerFollowee> {
-        TODO("Not yet implemented")
+        return dslContext.select()
+            .from(FOLLOWER_FOLLOWEE).fetch()
+            .into(FollowerFollowee::class.java)
     }
 
     override fun createFollowerFolloweeRelation(
@@ -49,16 +67,20 @@ class FollowerFolloweeRepositoryImpl(private val dslContext: DSLContext) :
         }
         record.store()
         return FollowerFollowee(
-            followeeId = record.followerId!!,
-            followerId = record.followerId!!,
-            id = record.id!!
+            followeeId = record.followeeId!!, followerId = record.followerId!!, id = record.id!!
         )
     }
 
     override fun deleteFollowerFolloweeRelation(
         followerId: Long,
         followeeId: Long
-    ): FollowerFollowee {
-        TODO("Not yet implemented")
+    ): Int {
+        return dslContext
+            .delete(FOLLOWER_FOLLOWEE)
+            .where(
+                FOLLOWER_FOLLOWEE.FOLLOWER_ID.eq(followerId)
+                    .and(FOLLOWER_FOLLOWEE.FOLLOWEE_ID.eq(followeeId))
+            )
+            .execute()
     }
 }

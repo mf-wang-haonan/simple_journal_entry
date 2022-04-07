@@ -3,10 +3,14 @@
  */
 package com.okeicalm.simpleJournalEntry.infra.db.indexes
 
+
 import com.okeicalm.simpleJournalEntry.infra.db.tables.JournalEntries
+
 import org.jooq.Index
 import org.jooq.impl.DSL
 import org.jooq.impl.Internal
+
+
 
 // -------------------------------------------------------------------------
 // INDEX definitions
