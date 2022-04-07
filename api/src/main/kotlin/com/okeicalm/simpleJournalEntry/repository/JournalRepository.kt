@@ -48,7 +48,7 @@ class JournalRepositoryImpl(private val dslContext: DSLContext) : JournalReposit
             .apply {
                 incurredOn = journal.incurredOn
             }
-                record.store()
+        record.store()
         return journal.copy(id = record.id!!)
     }
 }

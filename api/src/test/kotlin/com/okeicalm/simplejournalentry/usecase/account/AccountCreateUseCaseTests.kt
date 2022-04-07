@@ -2,7 +2,6 @@ package com.okeicalm.simpleJournalEntry.usecase.account
 
 import com.okeicalm.simpleJournalEntry.entity.Account
 import com.okeicalm.simpleJournalEntry.repository.AccountRepository
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
