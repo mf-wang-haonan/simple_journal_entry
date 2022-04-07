@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository
 interface FollowerFolloweeRepository {
     fun findFollowersOfUserById(id: Long): List<Account>
     fun findFolloweesOfUserById(id: Long): List<Account>
-    fun findAllFollowRelations(): List<FollowerFollowee>
-    fun followSomeone(followerId: Long, followeeId: Long): FollowerFollowee
-    fun unfollowSomeone(followerId: Long, followeeId: Long): FollowerFollowee
+    fun findAll(): List<FollowerFollowee>
+    fun createFollowerFolloweeRelation(followerId: Long, followeeId: Long): FollowerFollowee
+    fun deleteFollowerFolloweeRelation(followerId: Long, followeeId: Long): FollowerFollowee
 }
 
 @Repository
@@ -24,15 +24,15 @@ class FollowerFolloweeRepositoryImpl(private val dslContext: DSLContext) : Follo
         TODO("Not yet implemented")
     }
 
-    override fun findAllFollowRelations(): List<FollowerFollowee> {
+    override fun findAll(): List<FollowerFollowee> {
         TODO("Not yet implemented")
     }
 
-    override fun followSomeone(followerId: Long, followeeId: Long): FollowerFollowee {
+    override fun createFollowerFolloweeRelation(followerId: Long, followeeId: Long): FollowerFollowee {
         TODO("Not yet implemented")
     }
 
-    override fun unfollowSomeone(followerId: Long, followeeId: Long): FollowerFollowee {
+    override fun deleteFollowerFolloweeRelation(followerId: Long, followeeId: Long): FollowerFollowee {
         TODO("Not yet implemented")
     }
 }
